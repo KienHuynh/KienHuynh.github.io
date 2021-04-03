@@ -31,8 +31,6 @@ github_username: KienHuynh
 theme: minima
 plugins:
   - jekyll-feed
-  
-relative_permalinks: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
