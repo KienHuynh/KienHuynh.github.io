@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Lost in the forest - a reversed location problem with disks and points on the plane"
+title:  "Lost in the forest - A reversed location problem with disks and points on the plane"
 date:   2023-05-13 08:00:00 -0500
 categories: computationaly geometry
 mathjax: true
@@ -20,4 +20,15 @@ But Shawn is easily bored so he started to make up related geometry problems to 
 He started thinking about how the trees can be viewed as disks from above, 
 and at any point in the forest he can quickly identify all of the trees he sees by just taking a quick glance:
 
-![fig1](/static/blog-posts/reversed-location-problem/fig1.png width="60%")
+![fig1](/static/blog-posts/reversed-location-problem/fig1.png)
+
+Each disk in this illustration represents a tree (when you look at them from above). 
+Shawn is the point in the middle. At this location, he can see disks 4, 9, 7, 8, 15, …
+Then Shawn wonders: how efficiently can a computer do that?
+
+Given $$n$$ disjoint disks on the plane, each having a unique number, and a point $$(x, y)$$ not contained by any disk, 
+how quickly can you find out which disks this point sees? 
+We say a point $$u$$ sees a point $$w$$ if the line segment connecting $$u$$ and $$w$$ is not blocked by any disk:
+
+
+
