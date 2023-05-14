@@ -72,7 +72,7 @@ While waiting for the hermit to arrive, the lost guy starts to make up another p
 
 | Problem 2 |
 |:----------|
-|Given $$n$$ disks in the plane, each with a unique number. Then, given a subset of these disks, can you find the location(s) that can see all of the disks in this subset?|
+|You have $$n$$ disks on the plane, each with a unique number. Then, given a subset of these disks, can you find the location(s) that can see all of the disks in this subset?|
 
 Here, the input subset is just a list of tree IDs, not a list of intervals 
 (otherwise it would be fairly trivial and unsatisfying, and Shawn has to think of a new problem).
@@ -120,16 +120,16 @@ If we put any point $$w$$ in this region, it means that disk $$i$$ will “see�
 
 If we can compute such a region, then this is a better way to model the problem than the sampling method. 
 Say, we compute such regions for every disk. Then whenever we put a point $$(x, y)$$ on the plane as a query point, 
-we can check to which regions $$V_i$$ $$(x, y)$$ belong and answer which disks it sees. 
+we can check to which regions $$(x, y)$$ belong and answer which disks it sees. 
 It works the other way as well: when we are given a list of disks and we want to find out a region that sees all of them, 
 we can simply take the intersection of all $$V_i$$ (this intersection could also be empty if the disk list is invalid).
-How fast can this intersection computation be?
+The main question is how fast can this intersection computation be?
 
 Let $$m$$ be the number of disks in the input list, the running time for a query here is around $$O(m(n + I)\log n)$$
 where $$I$$ could be anything between a constant and $$O(n^4)$$.
 To understand what $$I$$ is, first we need to consider the complexity of the intersection beween two closed curves 
 each having $$O(n)$$ complexity (let's assume that the weak visibility regions of the disks have linear complexity for now).
-This computation can take up to $$O((n + J) \log n)$$ time where $J$ is the number of intersection points.
+This computation can take up to $$O((n + J) \log n)$$ time where $$J$$ is the number of intersection points.
 Since we have $$m$$ closed curves to perform intersection on,
 the total running time would be $$O(m(n + I)\log n$$ and $$I$$ is the largest
 number of intersection points we can possibly get.
@@ -186,8 +186,10 @@ which is also its weak visibility region:
 <img src="/static/blog-posts/reversed-location-problem/fig5.png" alt="fig5" width="55%" /> 
 </p>
 
-The process of computing each such region is not difficult but it is a bit involved so I will skip it in this post. 
-But we can safely assume that this can be done in polynomial time.
+The process of computing each such region is not difficult but it is a bit involved, 
+but we can deal with it by treating the whole thing as a graph: 
+the intersections of the bitagents are vertices and the segment connecting them are edges.
+A simple walk around the outer boundary of this (planer) graph will give us the weak visibility region.
 
 In practice, we can first compute all uninterrupted bitangents. 
 The set of bitangents, along with the disks’ boundaries, will split the plane into **faces**:
@@ -195,40 +197,28 @@ The set of bitangents, along with the disks’ boundaries, will split the plane 
 <p align="center">
 <img src="/static/blog-posts/reversed-location-problem/fig11.png" alt="fig11" width="80%" /> 
 </p>
-
+and we can use these faces to create weak visibility regions for every disks.
 (This looks more intimidating than it should be, and I probably missed a few bitangents.
 In the worst case, we can actually get up to 64 bitangents with just four disks).
 
-The neat thing about this not-so-neat-looking thing is that, 
+Now we can finally get the answer to why $$I$$ can be at most $$O(n^2)$$.
+Since the weak visibility regions of $$m$$ disks are made up of these small faces, the intersection is also a subset of these faces.
+Because we have at most $$O(n^2)$$ bitangents, [in the worst case we can have $$O(n^4)$$ faces](https://en.wikipedia.org/wiki/Arrangement_of_lines),
+and the total complexity of all of these faces is also $$O(n^4)$$, which is also the worst $$I$$ can be.
+
+One neat thing about the not-so-neat-looking thing above is that, 
 if you put a point in a face and move it within that face (except for the boundary of the face), 
 **the set of disks that this point sees will not change**. 
 In the above example, all points in the orange face will only see disk 1, 2 and 3. 
 For the blue face, all points within it will only see disk 1 and 4. 
+Due to this property, this structure also helps us improve the query time for **Problem 1** as well.
 This subdivision of the planes into faces by the lines and disks is called a “visibility arrangement”.
 
-As a result, to perform quicker queries, we can store all of those faces in some kind of appropriate data structure 
-(one reasonable way to do this is treating the whole thing as a graph and use the usual graph data structures). 
-When we have a new query point, we will just check which face contains it and get the list of disks that it sees. 
-But this can get tricky. Let’s say we store all of the faces (there are $$O(n^4)$$ in the worst case) 
-and for each face we also store the list of disks that it sees. 
-This means that we are looking at $$O(kn^4)$$ space where $$k$$ is the size of the largest disk list of the faces,
-which is much worse than the previous method which requires only $$O(n^2)$$ space.
+Going back to **Problem 1**, we can perform quicker queries by first storing all faces in the above arrangement.
+When we have a new query point, we will just check which face contains it,
+which can be done in $$O(\log n)$$ time using some specific [data structure](https://en.wikipedia.org/wiki/Point_location).
+Reporting the list of disks that the face sees will take $$O(s)$$ where $$s$$ is the number of disks the face sees.
 
-To make it a bit better, Shawn realizes that a face is made of only bitangents and each bitangent only hits at most 4 disks – 
-two tangent disks and two disks at the endpoints (unless there are degeneracy where there could be tritangents or worse 
-but let’s ignore that for now), which is a constant. 
-More than that, a face $$f$$ can only see at most the disks hit by the bitangents making up $$f$$. 
-So instead of storing the list of disks that each face sees, 
-we can simply store the bitangents and for each bitangent store the disks that it hits. 
-And edge in the graph data structure will now also have a pointer that points to its corresponding bitangent.
-
-During query time, we first retrieve the face containing the query point and then merge the lists of disks 
-hit by the bitangents into one list and return it. 
-Merging can get a bit tricky, because a face sometimes does not see all of the disks hit by a bitangent, but it’s not undoable. 
-With this trick, we get the space complexity down to $$O(n^4)$$. 
-The querying itself can be done in $$O(\log n)$$ time using some specific [data structure](https://en.wikipedia.org/wiki/Point_location).
-One more trick that we can use is to merge adjacent faces that share the same list of visible disks.
-But would we be able to prove that the total number of faces after merging is $$o(n^4)$$?
-This will be the story for another time since the hermit finally finds Shawn.
+As we were thinking about algorithms and data structures, the hermit finally finds Shawn.
 They greet each other and head to their supposed hangout place.
 Maybe they will think of another geometry problem for us to write about.
