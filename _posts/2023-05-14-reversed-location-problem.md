@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "Lost in the forest - a reversed location problem with disks and points on the plane"
-date:   2023-05-14 08:00:00 -0500
-categories: jekyll update
+date:   2023-05-13 08:00:00 -0500
+categories: computationaly geometry
 mathjax: true
 --- 
 
