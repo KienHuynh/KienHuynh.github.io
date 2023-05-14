@@ -20,7 +20,9 @@ But Shawn is easily bored so he started to make up related geometry problems to 
 He started thinking about how the trees can be viewed as disks from above, 
 and at any point in the forest he can quickly identify all of the trees he sees by just taking a quick glance:
 
-<img src="/static/blog-posts/reversed-location-problem/fig1.png" alt="fig1" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig1.png" alt="fig1" width="80%" /> 
+</p>
 
 Each disk in this illustration represents a tree (when you look at them from above). 
 Shawn is the point in the middle. At this location, he can see disks 4, 9, 7, 8, 15, …
@@ -30,7 +32,9 @@ Given $$n$$ disjoint disks on the plane, each having a unique number, and a poin
 how quickly can you find out which disks this point sees? 
 We say a point $$u$$ sees a point $$w$$ if the line segment connecting $$u$$ and $$w$$ is not blocked by any disk:
 
-<img src="/static/blog-posts/reversed-location-problem/visibility.png" alt="vis-def" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/visibility.png" alt="vis-def" width="50%" /> 
+</p>
 
 $$u$$ sees $$w$$ but not $$v$$. $$v$$ sees $$w$$ but not $$u$$. $$w$$ can see both. 
 This “a sees b” relation applies to both points on the plane and points on the boundary of disks. 
@@ -42,14 +46,18 @@ To do this, we look at the two tangent lines of disk $$i$$ from our location.
 Since our location and that of the disk’s is known, we can model these lines by two numbers (or an interval): 
 $$(a_i, b_i)$$, which are their angles with the positive x-axis. 
 
-<img src="/static/blog-posts/reversed-location-problem/fig2.png" alt="fig2" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig2.png" alt="fig2" width="45%" /> 
+</p>
 
 If disk $$j$$ is closer to us then disk $$i$$ and $$(a_j, b_j)$$ intersect with $$(a_i, b_i)$$ 
 then we know that disk $$j$$ is blocking disk $$i$$ by some amount. 
 We can easily calculate that and reduce $$(a_i, b_i)$$. Once $$(a_i, b_i) = \emptyset$$, 
 we know that disk $$i$$ is completely hidden from $$(x, y)$$. The naïve running time is $$O(n^2)$$.
 
-<img src="/static/blog-posts/reversed-location-problem/fig3.png" alt="fig3" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig3.png" alt="fig3" width="80%" /> 
+</p>
 
 Here, disk $$j$$ and $$k$$ are closer to $$(x, y)$$ than disk $$i$$. 
 Additionally, the intervals $$(a_j, b_j)$$ and $$(a_k, b_k)$$ completely block $$(a_i, b_i)$$ from our viewpoint.
@@ -86,7 +94,9 @@ To actually solve this, Shawn observes the following:
 if you put a point $$u$$ on the boundary of any disk and compute the region that this point sees, 
 then any point $$w$$ that lies inside this region must also see $$u$$:
 
-<img src="/static/blog-posts/reversed-location-problem/fig4.png" alt="fig4" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig4.png" alt="fig4" width="80%" /> 
+</p>
 
 (This orange region that $$u$$ sees in the above picture is the **visibility region** of $$u$$)
 
@@ -96,7 +106,9 @@ Let $$V_i$$ be the regions that disks $$i$$ can “see”,
 we define this as the union of all visibility regions of all points on the boundary if this disk. 
 The actual name for $$V_i$$ is the **weak visibility region** of disk $$i$$. See below for an example of such region:
 
-<img src="/static/blog-posts/reversed-location-problem/fig5.png" alt="fig5" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig5.png" alt="fig5" width="80%" /> 
+</p>
 
 The orange-shaded portion is the weak visibility region of disk $$i$$. 
 If we put any point $$w$$ in this region, it means that disk $$i$$ will “see” $$w$$ and vice versa.
@@ -112,7 +124,9 @@ The answer involves lots and lots of bitangent lines.
 As a refresher, a bitangent line is a line tangent to at least 2 different disks.
 Below are four bitangent lines of two disks:
 
+<p align="center">
 <img src="/static/blog-posts/reversed-location-problem/4bitangents.png" alt="4bitangents" width="60%" /> 
+</p>
 
 Generally, there are at most four bitangents between any two disks (unless they intersect, 
 but since we are working with trees let’s assume that at worst, they will only touch each other). 
@@ -120,23 +134,31 @@ But Shawn questions himself, why bitangents?
 
 To see why, he cooks up an example:
 
-<img src="/static/blog-posts/reversed-location-problem/fig7.png" alt="fig7" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig7.png" alt="fig7" width="50%" /> 
+</p>
 
 Consider the set of uninterrupted segments that connects a point on the boundary of disk $$i$$ to a point on that of $$j$$. 
 Instead of computing all such segments, which is a tall order, we can just check the bitangents that hit disk $$i$$ and $$j$$ instead:
 
-<img src="/static/blog-posts/reversed-location-problem/fig8.png" alt="fig8" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig8.png" alt="fig8" width="50%" /> 
+</p>
 
 The orange region with blue outline above is the region of points that see both $$i$$ and $$j$$. 
 Notice that to construct this region, we only need to compute a finite amount of bitangents. 
 Intuitively, this is the region we get by "wiggling" an uninterrupted segment connecting disk 
 $$i$$ and $$j$$ around as much as we can:
 
-<img src="/static/blog-posts/reversed-location-problem/fig9.png" alt="fig9" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig9.png" alt="fig9" width="50%" /> 
+</p>
 
 Depending on the arrangement of the disks, we may need to “wiggle” more than one segment between disks $$i$$ and $$j$$:
 
-<img src="/static/blog-posts/reversed-location-problem/fig10.png" alt="fig10" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig10.png" alt="fig10" width="80%" /> 
+</p>
 
 But even here, we still only need to compute a **finite amount of bitangents**.
 
@@ -146,8 +168,10 @@ We can repeat this process to for all disks $$j\neq i$$ to find points that see 
 Finally, the union of all of these regions will be the region of points that see disk $$i$$, 
 which is also its weak visibility region:
 
-<img src="/static/blog-posts/reversed-location-problem/fig6.png" alt="fig6" width="45%" /> 
-<img src="/static/blog-posts/reversed-location-problem/fig5.png" alt="fig5" width="45%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig6.png" alt="fig6" width="55%" /> 
+<img src="/static/blog-posts/reversed-location-problem/fig5.png" alt="fig5" width="55%" /> 
+</p>
 
 The process of computing each such region is not difficult but it is a bit involved so I will skip it in this post. 
 But we can safely assume that this can be done in polynomial time.
@@ -160,7 +184,9 @@ then whenever a point is given to be in this intersection we know that it will s
 In practice, we can first compute all uninterrupted bitangents. 
 The set of bitangents, along with the disks’ boundaries, will split the plane into **faces**:
 
-<img src="/static/blog-posts/reversed-location-problem/fig11.png" alt="fig11" width="60%" /> 
+<p align="center">
+<img src="/static/blog-posts/reversed-location-problem/fig11.png" alt="fig11" width="80%" /> 
+</p>
 
 (This looks more intimidating than it should be, and I probably missed a few bitangents.
 In the worst case, we can actually get up to 64 bitangents with just four disks).
