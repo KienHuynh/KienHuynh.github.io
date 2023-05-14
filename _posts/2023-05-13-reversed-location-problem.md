@@ -30,8 +30,7 @@ Then Shawn wonders: how efficiently can a computer do that?
 
 | Problem 1 |
 |:----------|
-|Given $$n$$ disjoint disks on the plane, each having a unique number, 
-and a point $$(x, y)$$ not contained by any disk, how quickly can you find out which disks this point sees?|
+|Given $$n$$ disjoint disks on the plane, each having a unique number, and a point $$(x, y)$$ not contained by any disk, how quickly can you find out which disks this point sees?|
 
 We say a point $$u$$ sees a point $$w$$ if the line segment connecting $$u$$ and $$w$$ is not blocked by any disk:
 
@@ -71,10 +70,12 @@ I will leave the solution for you and Shawn to find out since this problem is no
 You can deduce the answer yourself with this hint: it has to do with sorting.
 While waiting for the hermit to arrive, the lost guy starts to make up another problem – the reversed version of the above:
 
-Given $$n$$ disks in the plane, each with a unique number. 
-Suppose that you can see a subset of these disks by looking around, 
-can you calculate where you are? Here, the input is just a list of tree IDs, 
-not a list of intervals (otherwise it would be fairly trivial and unsatisfying, and Shawn has to think of a new problem).
+| Problem 2 |
+|:----------|
+|Given $$n$$ disks in the plane, each with a unique number. Then, given a subset of these disks, can you find the location(s) that can see all of the disks in this subset?|
+
+Here, the input subset is just a list of tree IDs, not a list of intervals 
+(otherwise it would be fairly trivial and unsatisfying, and Shawn has to think of a new problem).
 
 Shawn quickly noticed the trouble with this problem: the location may not be unique!
 For example, if you have one single tree, then you can see it from practically anywhere. 
