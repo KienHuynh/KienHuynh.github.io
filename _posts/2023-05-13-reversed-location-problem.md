@@ -39,6 +39,7 @@ We say a point $$u$$ sees a point $$w$$ if the line segment connecting $$u$$ and
 $$u$$ sees $$w$$ but not $$v$$. $$v$$ sees $$w$$ but not $$u$$. $$w$$ can see both. 
 This “a sees b” relation applies to both points on the plane and points on the boundary of disks. 
 Finally, we say that a point $$u$$ sees disk $$i$$ if it sees at least one point on the boundary of disk $$i$$.
+
 The naïve way (this is starting to sound like a leetcode session, 
 but I promise that it won’t be a leetcode problem in the end) is to check every disk, $$i$$, 
 and see if it’s blocked by some other disks. 
@@ -224,6 +225,6 @@ With this trick, we get the space complexity down to $$O(n^4)$$.
 The querying itself can be done in $$O(\log n)$$ time using some specific [data structure](https://en.wikipedia.org/wiki/Point_location).
 One more trick that we can use is to merge adjacent faces that share the same list of visible disks.
 But would we be able to prove that the total number of faces after merging is $$o(n^4)$$?
-This will be the story for another time since the hermit finally finds Shawn. 
+This will be the story for another time since the hermit finally finds Shawn.
 They greet each other and head to their supposed hangout place.
 Maybe they will think of another geometry problem for us to write about.
