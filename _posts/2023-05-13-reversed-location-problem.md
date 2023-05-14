@@ -62,7 +62,7 @@ we know that disk $$i$$ is completely hidden from $$(x, y)$$. The naïve running
 Here, disk $$j$$ and $$k$$ are closer to $$(x, y)$$ than disk $$i$$. 
 Additionally, the intervals $$(a_j, b_j)$$ and $$(a_k, b_k)$$ completely block $$(a_i, b_i)$$ from our viewpoint.
 
-But Shawn thinks he can do better than this: there is an $$O(nlogn)$$ solution and it’s the best we can do. 
+But Shawn thinks he can do better than this: there is an $$O(n\log n)$$ solution and it’s the best we can do. 
 I will leave the solution for you and Shawn to find out since this problem is not really the main focus of this story. 
 You can deduce the answer yourself with this hint: it has to do with sorting.
 While waiting for the hermit to arrive, the lost guy starts to make up another problem – the reversed version of the above:
@@ -114,7 +114,7 @@ The orange-shaded portion is the weak visibility region of disk $$i$$.
 If we put any point $$w$$ in this region, it means that disk $$i$$ will “see” $$w$$ and vice versa.
 
 If we can compute such a region, then this is a better way to model the problem than the sampling method. 
-Say, we compute such regions for every disk. Then whenever we put a point $(x, y)$ on the plane as a query point, 
+Say, we compute such regions for every disk. Then whenever we put a point $$(x, y)$$ on the plane as a query point, 
 we can check to which regions $$V_i$$ $$(x, y)$$ belong and answer which disks it sees. 
 It works the other way as well: have a list of disks and we want to find out a region that sees all of them, 
 we can simply take the intersection of all $$V_i$$.
@@ -177,10 +177,13 @@ The process of computing each such region is not difficult but it is a bit invol
 But we can safely assume that this can be done in polynomial time.
 
 Now that we have the weak visibility region of each disk, $$V_i$$, we can find all disks that a point $$(x, y)$$ 
-by simply checking all of the regions to which this point belongs. 
+sees by simply checking all of the regions to which this point belongs
+This costs us $$n\log n$$ time for each query because checking if a point is inside a closed, 
+simple curved can be done in $$\log n$$ time.
+The space complexity is $$O(n^2)$$.
 However, Shawn notices the following which can boost the query running time a bit: 
 if $$V_i$$ and $$V_j$$ overlap, and we can figure out their intersection beforehand, 
-then whenever a point is given to be in this intersection we know that it will see both of disks $$i$$ and $$j$$. 
+then whenever a point of query belongs to this intersection we know that it will see both of disks $$i$$ and $$j$$. 
 In practice, we can first compute all uninterrupted bitangents. 
 The set of bitangents, along with the disks’ boundaries, will split the plane into **faces**:
 
@@ -198,12 +201,13 @@ In the above example, all points in the orange face will only see disk 1, 2 and 
 For the blue face, all points within it will only see disk 1 and 4. 
 This subdivision of the planes into faces by the lines and disks is called a “visibility arrangement”.
 
-As a result, to perform quicker queries, we can store all of these some kind of appropriate data structure 
-(one reasonable way to do this is treating this thing as a graph and use an edge list). 
+As a result, to perform quicker queries, we can store all of those faces in some kind of appropriate data structure 
+(one reasonable way to do this is treating the whole thing as a graph and use the usual graph data structures). 
 When we have a new query point, we will just check which face contains it and get the list of disks that it sees. 
 But this can get tricky. Let’s say we store all of the faces (there are $$O(n^4)$$ in the worst case) 
 and for each face we also store the list of disks that it sees. 
-This means that we are looking at $$O(kn^4)$$ space where $$k$$ is the size of the largest disk list of the faces. 
+This means that we are looking at $$O(kn^4)$$ space where $$k$$ is the size of the largest disk list of the faces,
+which is much worse than the previous method which requires only $$O(n^2)$$ space.
 
 To make it a bit better, Shawn realizes that a face is made of only bitangents and each bitangent only hits at most 4 disks – 
 two tangent disks and two disks at the endpoints (unless there are degeneracy where there could be tritangents or worse 
@@ -218,5 +222,8 @@ hit by the bitangents into one list and return it.
 Merging can get a bit tricky, because a face sometimes does not see all of the disks hit by a bitangent, but it’s not undoable. 
 With this trick, we get the space complexity down to $$O(n^4)$$. 
 The querying itself can be done in $$O(\log n)$$ time using some specific [data structure](https://en.wikipedia.org/wiki/Point_location).
-The hermit finally finds Shawn. They greet each other and head to their supposed hangout place.
-They will probably start to think of another geometry problem soon, but that would be a story for another time.
+One more trick that we can use is to merge adjacent faces that share the same list of visible disks.
+But would we be able to prove that the total number of faces after merging is $$o(n^4)$$?
+This will be the story for another time since the hermit finally finds Shawn. 
+They greet each other and head to their supposed hangout place.
+Maybe they will think of another geometry problem for us to write about.
