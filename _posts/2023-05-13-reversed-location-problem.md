@@ -73,11 +73,11 @@ Suppose that you can see a subset of these disks by looking around,
 can you calculate where you are? Here, the input is just a list of tree IDs, 
 not a list of intervals (otherwise it would be fairly trivial and unsatisfying, and Shawn has to think of a new problem).
 
-Shawn quickly noticed the trouble with this problem: the location may not be unique! 
-For example, if you have one single tree, then you can see it from practically anywhere! 
-The solution is the entire unbounded 2D plane minus this lonely tree! 
+Shawn quickly noticed the trouble with this problem: the location may not be unique!
+For example, if you have one single tree, then you can see it from practically anywhere. 
+The solution is the entire unbounded 2D plane minus this lonely tree.
 This is a problem because if Shawn tells his friend that he sees tree $$1$$, the friend will have no way to narrow Shawn down:
-Shawn could be standing in the infinity!
+Shawn could be standing in the realm of infinity.
 
 But (un)luckily for Shawn, he is stuck in the middle of the forest, completely surrounded by trees. 
 Therefore, he can safely assume that: if you put a point in this forest, 
