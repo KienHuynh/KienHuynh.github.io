@@ -7,7 +7,7 @@ mathjax: true
 --- 
 
 Shawn got lost in the wood. 
-He was visiting a friend – who is living like a hermit – and went off-track. 
+He was visiting a friend – who is living like a hermit – and went off track. 
 Now he doesn’t know where he is. GPS shows that he’s in the middle of nowhere, 
 and the cellular service only has one bar so he can’t make a call. 
 The best Shawn could do right now is tell his friend where he is by sending a text message. 
@@ -43,7 +43,7 @@ This “a sees b” relation applies to both points on the plane and points on t
 Finally, we say that a point $$u$$ sees disk $$i$$ if it sees at least one point on the boundary of disk $$i$$.
 
 The naïve way (this is starting to sound like a leetcode session, 
-but I promise that it won’t be a leetcode problem in the end) is to check every disk, $$i$$, 
+but I promise that not everything in this post is a leetcode problem) is to check every disk, $$i$$, 
 and see if it’s blocked by some other disks. 
 To do this, we look at the two tangent lines of disk $$i$$ from our location. 
 Since our location and that of the disk’s is known, we can model these lines by two numbers (or an interval): 
@@ -66,9 +66,10 @@ Here, disk $$j$$ and $$k$$ are closer to $$(x, y)$$ than disk $$i$$.
 Additionally, the intervals $$(a_j, b_j)$$ and $$(a_k, b_k)$$ completely block $$(a_i, b_i)$$ from our viewpoint.
 
 But Shawn thinks he can do better than this: there is an $$O(n\log n)$$ solution and it’s the best we can do. 
-I will leave the solution for you and Shawn to find out since this problem is not really the main focus of this story. 
+I will leave the solution for you and Shawn to find out. 
 You can deduce the answer yourself with this hint: it has to do with sorting.
-While waiting for the hermit to arrive, the lost guy starts to make up another problem – the reversed version of the above:
+
+While waiting for the hermit to arrive, the lost guy starts to make up another problem – the loosely reversed version of the above:
 
 | Problem 2 |
 |:----------|
@@ -120,7 +121,7 @@ If we put any point $$w$$ in this region, it means that disk $$i$$ will “see�
 
 If we can compute such a region, then this is a better way to model the problem than the sampling method. 
 Say, we compute such regions for every disk. Then whenever we put a point $$(x, y)$$ on the plane as a query point, 
-we can check to which regions $$(x, y)$$ belong and answer which disks it sees. 
+we can check to which regions $$(x, y)$$ belongs and answer which disks it sees. 
 It works the other way as well: when we are given a list of disks and we want to find out a region that sees all of them, 
 we can simply take the intersection of all $$V_i$$ (this intersection could also be empty if the disk list is invalid).
 The main question is how fast can this intersection computation be?
@@ -129,7 +130,7 @@ Let $$m$$ be the number of disks in the input list, the running time for a query
 where $$I$$ could be anything between a constant and $$O(n^4)$$.
 To understand what $$I$$ is, first we need to consider the complexity of the intersection beween two closed curves 
 each having $$O(n)$$ complexity (let's assume that the weak visibility regions of the disks have linear complexity for now).
-This computation can take up to $$O((n + J) \log n)$$ time where $$J$$ is the number of intersection points.
+Its computation can take up to $$O((n + J) \log n)$$ time where $$J$$ is the number of intersection points.
 Since we have $$m$$ closed curves to perform intersection on,
 the total running time would be $$O(m(n + I)\log n$$ and $$I$$ is the largest
 number of intersection points we can possibly get.
@@ -145,13 +146,13 @@ Below are four bitangent lines of two disks:
 
 Generally, there are at most four bitangents between any two disks (unless they intersect, 
 but since we are working with trees let’s assume that at worst, they will only touch each other). 
-To see why we are dealing with bitagents, Shawn cooks up an example:
+To see how bitagents are relevant here, Shawn cooks up an example:
 
 <p align="center">
 <img src="/static/blog-posts/reversed-location-problem/fig7.png" alt="fig7" width="50%" /> 
 </p>
 
-Consider the set of uninterrupted segments that connects a point on the boundary of disk $$i$$ to a point on that of $$j$$. 
+Consider the set of uninterrupted segments, i.e. segments not passing through another disk, that connects a point on the boundary of disk $$i$$ to a point on that of $$j$$. 
 Instead of computing all such segments, which is a tall order, we can just check the bitangents that hit disk $$i$$ and $$j$$ instead:
 
 <p align="center">
@@ -186,8 +187,8 @@ which is also its weak visibility region:
 <img src="/static/blog-posts/reversed-location-problem/fig5.png" alt="fig5" width="55%" /> 
 </p>
 
-The process of computing each such region is not difficult but it is a bit involved, 
-but we can deal with it by treating the whole thing as a graph: 
+The process of computing each such region is not difficult but it is a bit involved.
+We can deal with it by treating the whole thing as a graph: 
 the intersections of the bitagents are vertices and the segment connecting them are edges.
 A simple walk around the outer boundary of this (planer) graph will give us the weak visibility region.
 
@@ -203,11 +204,11 @@ In the worst case, we can actually get up to 64 bitangents with just four disks)
 
 Now we can finally get the answer to why $$I$$ can be at most $$O(n^2)$$.
 Since the weak visibility regions of $$m$$ disks are made up of these small faces, the intersection is also a subset of these faces.
-Because we have at most $$O(n^2)$$ bitangents, [in the worst case we can have $$O(n^4)$$ faces](https://en.wikipedia.org/wiki/Arrangement_of_lines),
-and the total complexity of all of these faces is also $$O(n^4)$$, which is also the worst $$I$$ can be.
+Because we have at most $$O(n^2)$$ bitangents, [in the worst case we can have $$O(n^4)$$ faces](https://en.wikipedia.org/wiki/Arrangement_of_lines).
+The total complexity of all of these faces is also $$O(n^4)$$, which is the worst $$I$$ can be.
 
 One neat thing about the not-so-neat-looking thing above is that, 
-if you put a point in a face and move it within that face (except for the boundary of the face), 
+if you put a point in a face and move it within that face (not on the boundary), 
 **the set of disks that this point sees will not change**. 
 In the above example, all points in the orange face will only see disk 1, 2 and 3. 
 For the blue face, all points within it will only see disk 1 and 4. 
@@ -219,6 +220,6 @@ When we have a new query point, we will just check which face contains it,
 which can be done in $$O(\log n)$$ time using some specific [data structure](https://en.wikipedia.org/wiki/Point_location).
 Reporting the list of disks that the face sees will take $$O(s)$$ where $$s$$ is the number of disks the face sees.
 
-As we were thinking about algorithms and data structures, the hermit finally finds Shawn.
+As we are thinking about algorithms and data structures, the hermit finally finds Shawn.
 They greet each other and head to their supposed hangout place.
 Maybe they will think of another geometry problem for us to write about.
