@@ -28,8 +28,11 @@ Each disk in this illustration represents a tree (when you look at them from abo
 Shawn is the point in the middle. At this location, he can see disks 4, 9, 7, 8, 15, …
 Then Shawn wonders: how efficiently can a computer do that?
 
-Given $$n$$ disjoint disks on the plane, each having a unique number, and a point $$(x, y)$$ not contained by any disk, 
-how quickly can you find out which disks this point sees? 
+| Problem 1 |
+|:----------|
+|Given $$n$$ disjoint disks on the plane, each having a unique number, 
+and a point $$(x, y)$$ not contained by any disk, how quickly can you find out which disks this point sees?|
+
 We say a point $$u$$ sees a point $$w$$ if the line segment connecting $$u$$ and $$w$$ is not blocked by any disk:
 
 <p align="center">
@@ -89,7 +92,7 @@ Anyway, there is a horrible way to solve this problem: we sample a lot of points
 For each such point, compute the list of disks that it sees: some points will have a list that matches the input list, some will not. 
 Eventually we will be able to obtain an approximately accurate region representing our solution. 
 But this can be inefficient because we may have to sample a lot of points – which can take a long time, 
-and the accuracy of the solution depends on the number of sampled points which is exactly appealing.
+and the accuracy of the solution depends on the number of sampled points which isn't exactly appealing.
 
 To actually solve this, Shawn observes the following: 
 if you put a point $$u$$ on the boundary of any disk and compute the region that this point sees, 
@@ -117,11 +120,21 @@ If we put any point $$w$$ in this region, it means that disk $$i$$ will “see�
 If we can compute such a region, then this is a better way to model the problem than the sampling method. 
 Say, we compute such regions for every disk. Then whenever we put a point $$(x, y)$$ on the plane as a query point, 
 we can check to which regions $$V_i$$ $$(x, y)$$ belong and answer which disks it sees. 
-It works the other way as well: have a list of disks and we want to find out a region that sees all of them, 
-we can simply take the intersection of all $$V_i$$.
+It works the other way as well: when we are given a list of disks and we want to find out a region that sees all of them, 
+we can simply take the intersection of all $$V_i$$ (this intersection could also be empty if the disk list is invalid).
+How fast can this intersection computation be?
 
-The remaining question is how we can do this. 
-The answer involves lots and lots of bitangent lines. 
+Let $$m$$ be the number of disks in the input list, the running time for a query here is around $$O(m(n + I)\log n)$$
+where $$I$$ could be anything between a constant and $$O(n^4)$$.
+To understand what $$I$$ is, first we need to consider the complexity of the intersection beween two closed curves 
+each having $$O(n)$$ complexity (let's assume that the weak visibility regions of the disks have linear complexity for now).
+This computation can take up to $$O((n + J) \log n)$$ time where $J$ is the number of intersection points.
+Since we have $$m$$ closed curves to perform intersection on,
+the total running time would be $$O(m(n + I)\log n$$ and $$I$$ is the largest
+number of intersection points we can possibly get.
+
+But where does the $$O(n^4)$$ come from? And how do we compute weak visibility regions of the disks?
+The answer to both of these involves lots and lots of bitangent lines. 
 As a refresher, a bitangent line is a line tangent to at least 2 different disks.
 Below are four bitangent lines of two disks:
 
@@ -131,9 +144,7 @@ Below are four bitangent lines of two disks:
 
 Generally, there are at most four bitangents between any two disks (unless they intersect, 
 but since we are working with trees let’s assume that at worst, they will only touch each other). 
-But Shawn questions himself, why bitangents?
-
-To see why, he cooks up an example:
+To see why we are dealing with bitagents, Shawn cooks up an example:
 
 <p align="center">
 <img src="/static/blog-posts/reversed-location-problem/fig7.png" alt="fig7" width="50%" /> 
@@ -177,14 +188,6 @@ which is also its weak visibility region:
 The process of computing each such region is not difficult but it is a bit involved so I will skip it in this post. 
 But we can safely assume that this can be done in polynomial time.
 
-Now that we have the weak visibility region of each disk, $$V_i$$, we can find all disks that a point $$(x, y)$$ 
-sees by simply checking all of the regions to which this point belongs
-This costs us $$n\log n$$ time for each query because checking if a point is inside a closed, 
-simple curved can be done in $$\log n$$ time.
-The space complexity is $$O(n^2)$$.
-However, Shawn notices the following which can boost the query running time a bit: 
-if $$V_i$$ and $$V_j$$ overlap, and we can figure out their intersection beforehand, 
-then whenever a point of query belongs to this intersection we know that it will see both of disks $$i$$ and $$j$$. 
 In practice, we can first compute all uninterrupted bitangents. 
 The set of bitangents, along with the disks’ boundaries, will split the plane into **faces**:
 
