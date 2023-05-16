@@ -207,7 +207,7 @@ In the worst case, we can actually get up to 64 bitangents with just four disks)
 
 Now we can finally get the answer to why $$I$$ can be at most $$O(n^4)$$.
 Since the weak visibility regions of $$m$$ disks are made up of these small faces, the intersection is also a subset of these faces.
-Because we have at most $$O(n^4)$$ bitangents, [in the worst case we can have $$O(n^4)$$ faces](https://en.wikipedia.org/wiki/Arrangement_of_lines).
+Because we have at most $$O(n^2)$$ bitangents, [in the worst case we can have $$O(n^4)$$ faces](https://en.wikipedia.org/wiki/Arrangement_of_lines).
 The total complexity of all of these faces is also $$O(n^4)$$, which is the worst $$I$$ can be.
 
 One neat thing about the not-so-neat-looking thing above is that, 
