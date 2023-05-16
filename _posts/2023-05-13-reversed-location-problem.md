@@ -192,7 +192,7 @@ which is also its weak visibility region:
 The process of computing each such region is not difficult but it is a bit involved.
 We can deal with it by treating the whole thing as a graph: 
 the intersections of the bitagents are vertices and the segment connecting them are edges.
-A simple walk around the outer boundary of this (planer) graph will give us the weak visibility region.
+A simple walk around the outer boundary of this (planar) graph will give us the weak visibility region.
 
 In practice, we can first compute all uninterrupted bitangents. 
 The set of bitangents, along with the disks’ boundaries, will split the plane into **faces**:
@@ -204,9 +204,9 @@ and we can use these faces to create weak visibility regions for every disks.
 (This looks more intimidating than it should be, and I probably missed a few bitangents.
 In the worst case, we can actually get up to 64 bitangents with just four disks).
 
-Now we can finally get the answer to why $$I$$ can be at most $$O(n^2)$$.
+Now we can finally get the answer to why $$I$$ can be at most $$O(n^4)$$.
 Since the weak visibility regions of $$m$$ disks are made up of these small faces, the intersection is also a subset of these faces.
-Because we have at most $$O(n^2)$$ bitangents, [in the worst case we can have $$O(n^4)$$ faces](https://en.wikipedia.org/wiki/Arrangement_of_lines).
+Because we have at most $$O(n^4)$$ bitangents, [in the worst case we can have $$O(n^4)$$ faces](https://en.wikipedia.org/wiki/Arrangement_of_lines).
 The total complexity of all of these faces is also $$O(n^4)$$, which is the worst $$I$$ can be.
 
 One neat thing about the not-so-neat-looking thing above is that, 
