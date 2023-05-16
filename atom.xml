@@ -22,8 +22,6 @@ layout: null
    <updated>{{ post.date | date_to_xmlschema }}</updated>
    <id>{{ site.url }}{{ post.id }}</id>
    <content type="html">{{ post.content | xml_escape }}</content>
-   <logo>http://127.0.0.1:4000/static/blog-posts/reversed-location-problem/fig5.png</logo>
-   <icon>http://127.0.0.1:4000/static/blog-posts/reversed-location-problem/fig5.png</icon>
  </entry>
  {% endfor %}
 
