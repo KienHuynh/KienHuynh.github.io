@@ -6,6 +6,7 @@ categories: computationaly geometry
 mathjax: true
 image: /static/blog-posts/reversed-location-problem/fig5.png
 description: Finding your location in a forrest of disks.
+comments: true
 --- 
 
 Shawn got lost in the wood. 
