@@ -4,6 +4,8 @@ title:  "Lost in the forest - A reversed location problem with disks and points 
 date:   2023-05-13 08:00:00 -0500
 categories: computationaly geometry
 mathjax: true
+thumbnail: "/static/blog-posts/reversed-location-problem/fig5.png"
+thumbwidth: "30%"
 --- 
 
 Shawn got lost in the wood. 
