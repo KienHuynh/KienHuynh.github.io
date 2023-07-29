@@ -5,7 +5,7 @@ date:   2023-05-13 08:00:00 -0500
 categories: computationaly geometry
 mathjax: true
 image: /static/blog-posts/reversed-location-problem/fig5.png
-description: Finding your location in a forrest of disks.
+description: Finding your location in a forest of disks.
 comments: true
 --- 
 
